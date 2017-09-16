@@ -1,0 +1,19 @@
+language: python
+python:
+  - 2.7
+
+services:
+  - docker
+
+install:
+  - docker build -t tested_image .
+  - docker run --detach --name tested_image tested_image
+
+script:
+  - docker ps | grep -q tested_image
+  - docker inspect tested_image
+  - docker inspect tested_image | grep -i 'networksettings'
+  - docker stop tested_image
+
+notifications:
+  webhooks: https://hooks.microbadger.com/images/ernestasposkus/ubuntu1604/egwr4NTBN7BfkNzcyp0Vy_X4tcI=
